@@ -1,5 +1,4 @@
 import { useState } from "react";
-import ReactMarkdown from "react-markdown";
 
 import { type RouterOutputs } from "../utils/api";
 
@@ -25,14 +24,15 @@ export const NoteCard = ({
         >
           <div className="collapse-title text-xl font-bold">{note.title}</div>
           <div className="collapse-content">
-            <article className="prose lg:prose-xl">
-              <ReactMarkdown>{note.content}</ReactMarkdown>
-            </article>
+            <div className="mockup-code m-3 p-5">
+              <pre>
+                <code>{note.content}</code>
+              </pre>
+            </div>
           </div>
         </div>
         <div className="card-action mx-2 flex justify-end">
-          <ReactMarkdown>hello HJ</ReactMarkdown>
-          <button className="btn-danger btn-xs btn px-5" onClick={onDelete}>
+          <button className="btn-error btn-xs btn px-5" onClick={onDelete}>
             Delete
           </button>
         </div>

@@ -3,7 +3,6 @@ import React from "react";
 
 export const Header: React.FC = () => {
   const { data: sessionData } = useSession();
-  console.log("Session ", sessionData);
   return (
     <div className="navbar bg-primary text-primary-content">
       <div className="flex-1">
@@ -31,13 +30,13 @@ export const Header: React.FC = () => {
                 <a>Settings</a>
               </li>
               <li>
-                <a onClick={() => signOut()}>Logout</a>
+                <a onClick={() => void signOut()}>Logout</a>
               </li>
             </ul>
           </div>
         </div>
       ) : (
-        <button className="btn-primary btn" onClick={() => signIn()}>
+        <button className="btn-primary btn" onClick={() => void signIn()}>
           Login
         </button>
       )}

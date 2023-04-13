@@ -1,7 +1,6 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 import { api, type RouterOutputs } from "components/utils/api";
 import { Header } from "components/components/Header";
@@ -30,6 +29,7 @@ const Home: NextPage = () => {
 export default Home;
 
 type Topic = RouterOutputs["topic"]["getAll"][0];
+
 const Content: React.FC = () => {
   const { data: sessionData } = useSession();
 
@@ -66,7 +66,15 @@ const Content: React.FC = () => {
   });
 
   const createTopic = api.topic.create.useMutation({
-    onSuccess: () => refetchTopics(),
+    onSuccess: () => {
+      void refetchTopics();
+    },
+  });
+
+  const deleteTopic = api.topic.delete.useMutation({
+    onSuccess: () => {
+      void refetchTopics();
+    },
   });
 
   return (
@@ -84,6 +92,12 @@ const Content: React.FC = () => {
               >
                 {topic.title}
               </a>
+              <span
+                onClick={() => void deleteTopic.mutate({ id: topic.id })}
+                className="absolute inset-y-0 right-0"
+              >
+                ✗
+              </span>
             </li>
           ))}
         </ul>
@@ -93,7 +107,7 @@ const Content: React.FC = () => {
           className="input-bordered input input-sm w-full"
           onKeyDown={(e) => {
             if (e.key == "Enter") {
-              createTopic.mutate({
+              void createTopic.mutate({
                 title: e.currentTarget.value,
               });
               e.currentTarget.value = "";
